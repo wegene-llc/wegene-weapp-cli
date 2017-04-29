@@ -24,10 +24,11 @@ def generate_test_data(sex, age, ancestry, haplogroup,
         data['inputs']['data'] = sample.data['inputs']['data']
     elif rsid_file != '':
         rsids_fh = open(rsid_file, 'r')
-        rsids = rsids_fh.readline().strip().lower().split(',')
+        rsids = rsids_fh.readlines()
         rsids_fh.close()
         user_genome = process_raw_genome_data(sample.data['inputs'])
         for rsid in rsids:
+            rsid = rsid.strip().lower()
             try:
                 data['inputs'][rsid.upper()] = user_genome[rsid]['genotype']
             except:
@@ -61,7 +62,7 @@ def cli():
               type=click.Choice(['y', 'n']), default='y',
               help='Whether to require whole genome data')
 @click.option('--rsid_file', prompt='RSID List File', default='',
-              help='A list file with rsids required separated by comma')
+              help='A list file with rsids required separated by new line')
 def init(project, language, sex, age, ancestry, haplogroup, genome, rsid_file):
     work_path = os.getcwd()
     lib_path = os.path.split(os.path.abspath(__file__))[0]
