@@ -31,14 +31,30 @@ try:
     inputs = json.loads(body)['inputs']
     # 使用 wegene_utils 解析以后，数据会被解析成下面这样的 json 格式:
     #   {'rs123': {'genotype': 'AA', 'chromosome': '1', position: '1236'}, ...}
-    user_genome = process_raw_genome_data(inputs)
-    rs671 = user_genome['rs671']['genotype']
+    if 'data' in inputs.keys():
+        user_genome = process_raw_genome_data(inputs)
+        rs671 = user_genome['rs671']['genotype']
+
+    if 'sex' in inputs.keys():
+        sex = inputs['sex']
+
+    if 'age' in inputs.keys():
+        age = inputs['age']
+
+    if 'haplogroup' in inputs.keys():
+        haplogroup = inputs['haplogroup']
+
+    if 'ancestry' in inputs.keys():
+        sex = inputs['ancestry']
 
     # 如果输入的数据是部分位点数据，你可以直接进行使用，注意 RSID 是大写且要求的位点在没有检测
     # 的情况下 key 可能不存在
     # inputs = json.loads(body)['inputs']
     # if 'RS671' in inputs.keys():
     #   rs671 = inputs['RS671']
+
+    if 'RS671' in inputs.keys():
+        rs671 = inputs['RS671']
 
     # 现在你可以开始根据输入数据进行实际的计算并输出结论了
     # result = do_something(user_genome)

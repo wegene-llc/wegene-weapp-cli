@@ -27,7 +27,25 @@ tryCatch({
 
     # Next, get genome information which contains
     # rsid, chromosome, position and genotype in a data frame
-    genome_info <- genome_info(genome$genome_str, genome$genome_format)
+    if(!(is.null(inputs$data)){
+      genome_info <- genome_info(genome$genome_str, genome$genome_format)
+    }
+
+    if(!(is.null(inputs$sex)){
+      sex <- inputs$sex
+    }
+
+    if(!(is.null(inputs$age)){
+      age <- inputs$age
+    }
+
+    if(!(is.null(inputs$ancestry)){
+      ancestry <- inputs$ancestry
+    }
+
+    if(!(is.null(inputs$haplogroup)){
+      haplogroup <- inputs$haplogroup
+    }
 
 
     # Else if you are requiring other data, simply parse input string
@@ -38,6 +56,10 @@ tryCatch({
     # if(!(is.null(inputs$RS671)){
     #  RS671 <- inputs$RS671
     # }
+
+    if(!(is.null(inputs$RS671)){
+      RS671 <- inputs$RS671
+    }
 
     # Now your calculation goes here, do whatever you like
     # result = do_something(user_genome)
