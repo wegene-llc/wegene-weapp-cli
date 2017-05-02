@@ -4,7 +4,9 @@ WeGene 的轻应用开发者可以通过本命令行工具生成、测试及打�
 
 ## 安装 ##
 
-`pip install wegene-weapp-cli`
+```
+pip install wegene-weapp-cli
+```
 
 ## 使用 ##
 
