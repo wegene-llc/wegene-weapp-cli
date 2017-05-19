@@ -27,23 +27,23 @@ tryCatch({
 
     # Next, get genome information which contains
     # rsid, chromosome, position and genotype in a data frame
-    if(!(is.null(inputs$data)){
+    if(!(is.null(inputs$data))){
       genome_info <- genome_info(genome$genome_str, genome$genome_format)
     }
 
-    if(!(is.null(inputs$sex)){
+    if(!(is.null(inputs$sex))){
       sex <- inputs$sex
     }
 
-    if(!(is.null(inputs$age)){
+    if(!(is.null(inputs$age))){
       age <- inputs$age
     }
 
-    if(!(is.null(inputs$ancestry)){
+    if(!(is.null(inputs$ancestry))){
       ancestry <- inputs$ancestry
     }
 
-    if(!(is.null(inputs$haplogroup)){
+    if(!(is.null(inputs$haplogroup))){
       haplogroup <- inputs$haplogroup
     }
 
@@ -57,7 +57,7 @@ tryCatch({
     #  RS671 <- inputs$RS671
     # }
 
-    if(!(is.null(inputs$RS671)){
+    if(!(is.null(inputs$RS671))){
       RS671 <- inputs$RS671
     }
 

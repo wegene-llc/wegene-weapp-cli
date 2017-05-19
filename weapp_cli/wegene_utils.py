@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import sys
 import gzip
 import base64
@@ -17,10 +18,12 @@ Reads the genome string anmd format and parse into a dict of
 
 def parse_genome_string(genome_str, genome_format):
     try:
+        lib_path = os.path.split(os.path.abspath(__file__))[0]
         genome_dict = {}
         # Index files for all posible formats will be provided automatically
         # Do not change the default path below if you wish to use those
-        with open('./indexes/index_' + genome_format + '.idx', 'r') as idx_f:
+        index_file_path = lib_path + '/indexes/index_' + genome_format + '.idx'
+        with open(index_file_path, 'r') as idx_f:
             for line in idx_f:
                 fields = line.split('\t')
                 index_pos = fields[0]

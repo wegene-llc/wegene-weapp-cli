@@ -178,8 +178,9 @@ def package():
                     if filename != archive_name and filename != '.weapp':
                         zipf.write(os.path.join(dirname, filename))
             else:
-                click.echo(click.style('Ignored folders for local testing: '
-                                       + dirname,
+                click.echo(click.style('Ignoring folder for local testing: '
+                                       + dirname + '. Do not put your custom '
+                                       + 'files under this folder',
                            fg='yellow'))
         zipf.close()
         click.echo(click.style('Archiving completed!', fg='green'))
