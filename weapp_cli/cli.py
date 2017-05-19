@@ -35,7 +35,7 @@ def generate_test_data(sex, age, ancestry, haplogroup,
                 click.echo(click.style(rsid + ' does not exist, ignored',
                                        fg='yellow'))
 
-    return json.dumps(data, indent=4)
+    return json.dumps(data)
 
 
 @click.group()

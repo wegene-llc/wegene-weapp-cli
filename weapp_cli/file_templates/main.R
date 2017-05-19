@@ -16,35 +16,34 @@ source('wegene_utils.R')
 
 
 # Inputs always come from stdin
-body <- readLines(file('stdin', 'r'), warn = F)
+body <- readLines(file('stdin', 'r'), warn = F, n = 1)
 
 tryCatch({
     # Assume the required data is whole genome, parse it into an R object first
     inputs <- fromJSON(json_str = body)
 
     # First, get genome string and genome format
-    genome <- unzip_genome_data(inputs)
-
     # Next, get genome information which contains
     # rsid, chromosome, position and genotype in a data frame
-    if(!(is.null(inputs$data))){
+    if(!(is.null(inputs$inputs$data))){
+      genome <- unzip_genome_data(inputs)
       genome_info <- genome_info(genome$genome_str, genome$genome_format)
     }
 
-    if(!(is.null(inputs$sex))){
-      sex <- inputs$sex
+    if(!(is.null(inputs$inputs$sex))){
+      sex <- inputs$inputs$sex
     }
 
-    if(!(is.null(inputs$age))){
-      age <- inputs$age
+    if(!(is.null(inputs$inputs$age))){
+      age <- inputs$inputs$age
     }
 
-    if(!(is.null(inputs$ancestry))){
-      ancestry <- inputs$ancestry
+    if(!(is.null(inputs$inputs$ancestry))){
+      ancestry <- inputs$inputs$ancestry
     }
 
-    if(!(is.null(inputs$haplogroup))){
-      haplogroup <- inputs$haplogroup
+    if(!(is.null(inputs$inputs$haplogroup))){
+      haplogroup <- inputs$inputs$haplogroup
     }
 
 
@@ -57,8 +56,8 @@ tryCatch({
     #  RS671 <- inputs$RS671
     # }
 
-    if(!(is.null(inputs$RS671))){
-      RS671 <- inputs$RS671
+    if(!(is.null(inputs$inputs$RS671))){
+      RS671 <- inputs$inputs$RS671
     }
 
     # Now your calculation goes here, do whatever you like
