@@ -25,7 +25,7 @@ def parse_genome_string(genome_str, genome_format):
         index_file_path = lib_path + '/indexes/index_' + genome_format + '.idx'
         with open(index_file_path, 'r') as idx_f:
             for line in idx_f:
-                fields = line.split('\t')
+                fields = line.strip().split('\t')
                 index_pos = fields[0]
                 rsid = fields[1]
                 chromosome = fields[2]
