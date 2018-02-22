@@ -3,11 +3,11 @@ A CLI tool for generating, testing and packaging WeGene weapps
 """
 from setuptools import find_packages, setup
 
-dependencies = ['click']
+dependencies = ['click', 'wget']
 
 setup(
     name='wegene-weapp-cli',
-    version='0.0.7',
+    version='0.1.0',
     url='https://github.com/wegene-llc/wegene-weapp-cli',
     license='MIT',
     author='Xiaoli Wu',
@@ -30,8 +30,8 @@ setup(
         # 'Development Status :: 1 - Planning',
         # 'Development Status :: 2 - Pre-Alpha',
         # 'Development Status :: 3 - Alpha',
-        'Development Status :: 4 - Beta',
-        # 'Development Status :: 5 - Production/Stable',
+        # 'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         # 'Development Status :: 6 - Mature',
         # 'Development Status :: 7 - Inactive',
         'Environment :: Console',

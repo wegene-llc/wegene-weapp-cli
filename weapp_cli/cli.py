@@ -2,6 +2,7 @@ import click
 import os
 import json
 import zipfile
+import wget
 import subprocess
 from shutil import copy2, copytree
 
@@ -10,7 +11,7 @@ from wegene_utils import process_raw_genome_data
 
 
 def generate_test_data(sex, age, ancestry, haplogroup,
-                       genome, rsid_file, array_format):
+                       genome, rsid_file, array_format, extended_file=''):
     data = {'inputs': {'format': array_format}}
     if sex == 'y':
         data['inputs']['sex'] = sample.data['inputs']['sex']
@@ -25,10 +26,22 @@ def generate_test_data(sex, age, ancestry, haplogroup,
     elif rsid_file != '':
         rsids_fh = open(rsid_file, 'r')
         rsids = rsids_fh.readlines()
+        rsids = map(lambda rsid: rsid.strip().lower(), rsids)
         rsids_fh.close()
         user_genome = process_raw_genome_data(sample.data['inputs'])
+        if extended_file:
+            extended_fh = open(extended_file, 'r')
+            extended_data_lines = extended_fh.readlines()
+            for line in extended_data_lines:
+                rs, chromosome, pos, genotype = line.strip().split('\t')
+                if rs in rsids:
+                    user_genome[rs] = {
+                        'genotype': genotype,
+                        'chromosome': chromosome,
+                        'position': pos
+                    }
+            extended_fh.close()
         for rsid in rsids:
-            rsid = rsid.strip().lower()
             try:
                 data['inputs'][rsid.upper()] = user_genome[rsid]['genotype']
             except:
@@ -108,14 +121,46 @@ def init(project, language, sex, age, ancestry, haplogroup, genome, rsid_file):
         copy2(lib_path + '/file_templates/main.R', project_path)
         copytree(lib_path + '/indexes', project_path + '/indexes')
 
+    extended_data_file = ''
+    if(os.path.isdir(lib_path + '/extended_data')):
+        copytree(lib_path + '/extended_data', project_path + '/extended_data')
+        extended_data_file = project_path + '/extended_data/extended_data.dat'
+
     click.echo(click.style('Generating test data...', fg='green'))
 
     data_file = open(project_data_path + '/data.json', 'w')
     data_file.write(generate_test_data(sex, age, ancestry, haplogroup,
-                                       genome, rsid_file, 'wegene_affy_2'))
+                                       genome, rsid_file, 'wegene_affy_2',
+                                       extended_data_file))
     data_file.close()
     click.echo(click.style('Project Initialization Completed', fg='green'))
 
+
+@cli.command()
+def download_extra():
+    extended_data_url = 'http://wegene-upload-prod.oss-cn-hangzhou.aliyuncs.com/sample_data/extended_data.zip'
+    click.echo(click.style('Downloading extended data, ' +
+                           'please wait...',
+               fg='green'))
+    lib_path = os.path.split(os.path.abspath(__file__))[0]
+    try:
+        extended_data_archive = wget.download(extended_data_url, out=lib_path)
+        click.echo(click.style('\nDownload completed, unpacking now...',
+                   fg='green'))
+        zip_file = zipfile.ZipFile(extended_data_archive)
+        for names in zip_file.namelist():
+            zip_file.extract(names, lib_path)
+        zip_file.close()
+        click.echo(click.style('Removing temp data...',
+                   fg='green'))
+        if os.path.exists(extended_data_archive):
+            os.remove(extended_data_archive)
+        click.echo(click.style('Successfully updated extended data!',
+                   fg='green'))
+    except Exception:
+        click.echo(click.style('Failed to download extended data, ' +
+                               'please try again!',
+                               fg='red'))
 
 @cli.command()
 def test():
@@ -172,7 +217,8 @@ def package():
         archive_name = meta['project'] + '.zip'
         zipf = zipfile.ZipFile(archive_name, 'w', zipfile.ZIP_DEFLATED)
         for dirname, subdirs, files in os.walk('.'):
-            if dirname != './data' and dirname != './indexes':
+            if dirname != './data' and dirname != './indexes' \
+              and dirname != './extended_data':
                 zipf.write(dirname)
                 for filename in files:
                     if filename != archive_name and filename != '.weapp':

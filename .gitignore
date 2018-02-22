@@ -1,3 +1,5 @@
+extended_data/
+
 *.pyc
 
 dist/
