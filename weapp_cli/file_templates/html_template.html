@@ -1,0 +1,293 @@
+<style>
+    html {
+        height: 100%;
+    }
+
+    body {
+        height: 100%;
+        padding-bottom: 50px;
+        font-size: 15px;
+        line-height: 24px;
+        color: #333333;
+        background: #F4F7F9;
+    }
+
+    body,
+    input,
+    button,
+    select,
+    textarea,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: 'Helvetica Neue', "PingFang SC", 'STHeiti', '微软雅黑', 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+    }
+
+    a,
+    a:visited {
+        color: #4fb1f7;
+        cursor: pointer;
+    }
+
+    a:hover {
+        text-decoration: none;
+        opacity: 0.8;
+        color: #4fb1f7;
+    }
+
+    a:active {
+        opacity: 1;
+    }
+
+    a:focus {
+        outline: none !important;
+    }
+
+    ul,
+    ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    ul.disc {
+        padding-left: 20px;
+        list-style: disc;
+    }
+
+    ul.disc li {
+        margin-bottom: 10px;
+    }
+
+    ul li {
+        line-height: 26px;
+        word-wrap: break-word;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin-top: 0;
+        font-size: 100%;
+        line-height: 26px;
+        font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    textarea {
+        -webkit-appearance: none;
+    }
+
+    b {
+        font-weight: 500;
+    }
+
+    dd {
+        margin-left: 10px;
+    }
+
+    table,
+    .table {
+        margin: 0;
+        text-align: center;
+    }
+
+    table th {
+        text-align: center;
+        border-bottom: 1px solid #eceff1 !important;
+    }
+
+    table tr td {
+        border-bottom: 1px solid #eceff1 !important;
+    }
+
+    .table>tbody>tr>td,
+    .table>tbody>tr>th,
+    .table>tfoot>tr>td,
+    .table>tfoot>tr>th,
+    .table>thead>tr>td,
+    .table>thead>tr>th {
+        padding: 15px 8px;
+    }
+
+    hr {
+        margin: 15px 0;
+        border-color: #ECEFF1;
+    }
+
+    hr.active {
+        border-color: #ebebeb;
+    }
+
+    .mod {
+        width: 375px;
+        margin: 0 auto;
+        padding: 15px 15px 15px;
+        background: #fff;
+        border: 1px solid #4fb1f7;
+        border-radius: 4px;
+    }
+
+    .mod .mod-head {
+        height: auto;
+        margin-bottom: 20px;
+        padding: 20px 0 0;
+        overflow: hidden;
+    }
+
+    .mod .mod-head h2 {
+        float: left;
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .mod .mod-head h2 img {
+        margin-right: 8px;
+        vertical-align: -6px;
+    }
+
+    .markdown-content ol {
+        display: block;
+        list-style-type: decimal;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        text-align: left;
+        padding-left: 20px;
+    }
+
+    .markdown-content ul {
+        display: block;
+        list-style-type: disc;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        text-align: left;
+        padding-left: 20px;
+    }
+
+    .markdown-content table {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .markdown-content table tr {
+        border-bottom: 1px solid #E6E6E6;
+    }
+
+    .markdown-content table tr td {
+        width: 80px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .markdown-content table tr th {
+        width: 80px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .markdown-content table thead {
+        background: #4FB1F7;
+        color: #fff;
+    }
+
+    .markdown-content table tbody tr:nth-child(even) {
+        background: #F0F9FF;
+    }
+
+    .markdown-content p {
+        color: #333;
+        font-size: 16px;
+        line-height: 25px;
+        text-align: left;
+    }
+
+    .markdown-content p code {
+        color: #4FB1F7;
+    }
+
+    .markdown-content img {
+        width: 100%;
+        margin: 20px 0;
+        border-radius: 4px;
+    }
+
+    .markdown-content h1 {
+        margin-bottom: 5px;
+        line-height: 32px;
+        font-size: 22px;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .markdown-content h2 {
+        padding-top: 10px;
+        line-height: 26px;
+        font-size: 18px;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .markdown-content h3 {
+        padding-top: 20px;
+        text-align: left;
+        line-height: 26px;
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    .markdown-content h4 {
+        padding-top: 20px;
+        font-size: 16px;
+        color: #4FB1F7;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    .markdown-content h5 {
+        font-size: 13px;
+        line-height: 21px;
+        color: #999999;
+        text-align: center;
+        font-weight: 400;
+    }
+
+    .markdown-content hr {
+        margin: 20px 0;
+        border: 1px solid #E6E6E6;
+    }
+
+    .markdown-content code {
+        color: #4FB1F7;
+    }
+
+    .markdown-content a {
+        text-decoration: underline;
+    }
+
+    .markdown-content .box {
+        width: 500px;
+        margin: 50px auto;
+        padding: 0 20px 20px;
+        border: 1px solid #4FB1F7;
+        border-radius: 10px;
+        font-size: 16px;
+    }
+</style>
+
+<body>
+    <div class="mod">
+        <div class="mod-body">
+            <div class="markdown-content">
+                {{RESULTS}}
+            </div>
+        </div>
+    </div>
+</body>

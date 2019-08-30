@@ -39,6 +39,7 @@ Require Ancestry Composition [y]: // 是否需要使用祖源数据 [y/n]
 Require Haplogroup [y]: // 是否需要使用单倍群数据 [y/n]
 Require Whole Genome Data [y]: // 是否需要使用全部位点数据 [y/n]
 RSID List File []: // 在不使用全部位点数据的情况下，需要的部分位点的列表文件路径（相对/绝对）。列表文件中应每行一个 RSID。
+Output In Markdown Format [y]: // 是否以 Markdown 形式输出结果，如果是，在测试时会解析 Markdown 语法并生成模拟线上样式的 HTML 文件供参考。
 ```
 
 ### 测试轻应用 ###

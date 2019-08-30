@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import click
 import os
 import json
@@ -5,6 +7,7 @@ import zipfile
 import wget
 import subprocess
 from shutil import copy2, copytree
+import markdown
 
 import sample
 from wegene_utils import process_raw_genome_data
@@ -76,12 +79,15 @@ def cli():
               help='Whether to require whole genome data')
 @click.option('--rsid_file', prompt='RSID List File', default='',
               help='A list file with rsids required separated by new line')
-def init(project, language, sex, age, ancestry, haplogroup, genome, rsid_file):
+@click.option('--markdown', prompt='Output In Markdown Format',
+              type=click.Choice(['y', 'n']), default='y',
+              help='Whether to use markdown for output')
+def init(project, language, sex, age, ancestry, haplogroup, genome, rsid_file, markdown):
     work_path = os.getcwd()
     lib_path = os.path.split(os.path.abspath(__file__))[0]
     project_path = work_path + '/' + project
     project_data_path = project_path + '/data'
-
+        
     click.echo(click.style('Initializing the project...', fg='green'))
 
     if(os.path.isdir(project_path)):
@@ -105,7 +111,13 @@ def init(project, language, sex, age, ancestry, haplogroup, genome, rsid_file):
     os.makedirs(project_path)
     os.makedirs(project_data_path)
 
-    meta = {'project': project, 'language': language}
+    if markdown == 'y':
+        markdown = 1
+        copy2(lib_path + '/file_templates/html_template.html', project_path)
+    else:
+        markdown = 0
+
+    meta = {'project': project, 'language': language, 'markdown': markdown}
     meta_file = open(project_path + '/.weapp', 'w')
     meta_file.write(json.dumps(meta, indent=4))
     meta_file.close()
@@ -175,6 +187,7 @@ def test():
         with open('.weapp') as meta_file:
             meta = json.load(meta_file)
         language = meta['language']
+        is_markdown = meta['markdown']
 
         try:
             p1 = subprocess.Popen(['cat', './data/data.json'],
@@ -189,7 +202,24 @@ def test():
 
             click.echo(click.style('WeApp Outputs: ', fg='green'))
             if p2.stdout is not None:
-                click.echo(click.style(p2.stdout.read() + '\n', fg='yellow'))
+                if is_markdown:
+                    exts = ['markdown.extensions.tables']
+                    result = p2.stdout.read().decode('utf-8')
+                    result = markdown.markdown(result, extensions=exts).encode('utf-8')
+
+                    template_file = open('./html_template.html', 'r')
+                    html_template = template_file.read()
+                    template_file.close()
+
+                    html_file = open('./test_result.html', 'w')
+                    html_file.write(html_template.replace('{{RESULTS}}', result))
+                    html_file.close()
+                else:
+                    result = p2.stdout.read()
+                click.echo(click.style(result + '\n', fg='yellow'))
+
+                if is_markdown:
+                    click.echo(click.style('Note: An HTML file named "test_result.html" is generated for you to test styles\n', fg='green'))
             else:
                 click.echo(click.style('None\n', fg='yellow'))
 
@@ -221,7 +251,7 @@ def package():
               and dirname != './extended_data':
                 zipf.write(dirname)
                 for filename in files:
-                    if filename != archive_name and filename != '.weapp':
+                    if filename != archive_name and filename != '.weapp' and filename != 'html_template.html' and filename != 'test_result.html':
                         zipf.write(os.path.join(dirname, filename))
             else:
                 click.echo(click.style('Ignoring folder for local testing: '
