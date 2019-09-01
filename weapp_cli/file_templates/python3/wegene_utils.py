@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+
+__all__ = ['process_raw_genome_data']
+
 import sys
 import gzip
 import base64
-from StringIO import StringIO
+from io import BytesIO
 
 
 def sort_genotype(genotyope):
@@ -40,17 +43,17 @@ def parse_genome_string(genome_str, genome_format):
         sys.stderr.write('Error on file {} line {} '.format(
                             sys.exc_info()[-1].tb_frame.f_code.co_filename,
                             sys.exc_info()[-1].tb_lineno)
-                         + e.message)
+                         + str(e))
 
 
 def process_raw_genome_data(raw_inputs):
     try:
-        genome = gzip.GzipFile(fileobj=StringIO(
-                    base64.b64decode(raw_inputs['data']))).read()
+        genome = str(gzip.GzipFile(fileobj=BytesIO(
+                    base64.b64decode(raw_inputs['data']))).read())
         genome_format = raw_inputs['format']
         return parse_genome_string(genome, genome_format)
     except Exception as e:
         sys.stderr.write('Error on file {} line {} '.format(
                             sys.exc_info()[-1].tb_frame.f_code.co_filename,
                             sys.exc_info()[-1].tb_lineno)
-                         + e.message)
+                         + str(e))

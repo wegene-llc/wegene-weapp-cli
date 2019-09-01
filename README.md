@@ -8,6 +8,12 @@ WeGene 的轻应用开发者可以通过本命令行工具生成、测试及打�
 pip install wegene-weapp-cli
 ```
 
+## 版本 ##
+
+由于 Python 2 的支持生命周期即将结束，自 `wegene-weapp-cli==0.9.9` 版本开始，`weapp-cli` 将只支持在 Python 3.6 或更高版本运行。同时，从该版本开始，本工具将支持使用 Python 3.6 或更高版本开发轻应用。需要注意的是，这只代表 `weapp-cli` 工具将不能在 Python 2 环境下运行，而我们依然会支持使用 Python 2.7 开发的轻应用一段时间以便平滑过渡。
+
+如果您仍然在使用 Python 2.7，并且只需要开发 Python 2.7 下的轻应用，可以选择安装 `wegene-weapp-cli==0.2.1`。
+
 ## 更新扩展数据 ##
 
 WeGene 目前为用户提供千万位点的扩展数据，并且轻应用中同样可以使用这部分位点。由于该部分数据较大，无法与安装包一同提供下载。为了保证您在生成测试数据时可以使用扩展数据，您可以在安装完本工具后执行以下命令下载额外的扩展数据以供未来使用：
@@ -32,7 +38,7 @@ weapp-cli init
 
 ```
 Project Name [weapp-project]: // 输入你的轻应用工程名，会在当前文件夹下生成该名字的工程文件夹
-Language to Use [python27]: // 轻应用使用的语言 [python27/r]
+Language to Use [python27]: // 轻应用使用的语言 [python27/python3/r]
 Require Sex [y]: // 是否需要使用性别数据 [y/n]
 Require Age [y]: // 是否需要使用年龄数据 [y/n]
 Require Ancestry Composition [y]: // 是否需要使用祖源数据 [y/n]
