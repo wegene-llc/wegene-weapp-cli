@@ -9,29 +9,29 @@ import subprocess
 from shutil import copy2, copytree
 import markdown
 
-import sample
-from wegene_utils import process_raw_genome_data
+from weapp_cli.sample import data as sample_data
+from weapp_cli.wegene_utils import process_raw_genome_data
 
 
 def generate_test_data(sex, age, ancestry, haplogroup,
                        genome, rsid_file, array_format, extended_file=''):
     data = {'inputs': {'format': array_format}}
     if sex == 'y':
-        data['inputs']['sex'] = sample.data['inputs']['sex']
+        data['inputs']['sex'] = sample_data['inputs']['sex']
     if age == 'y':
-        data['inputs']['age'] = sample.data['inputs']['age']
+        data['inputs']['age'] = sample_data['inputs']['age']
     if ancestry == 'y':
-        data['inputs']['ancestry'] = sample.data['inputs']['ancestry']
+        data['inputs']['ancestry'] = sample_data['inputs']['ancestry']
     if haplogroup == 'y':
-        data['inputs']['haplogroup'] = sample.data['inputs']['haplogroup']
+        data['inputs']['haplogroup'] = sample_data['inputs']['haplogroup']
     if genome == 'y':
-        data['inputs']['data'] = sample.data['inputs']['data']
+        data['inputs']['data'] = sample_data['inputs']['data']
     elif rsid_file != '':
         rsids_fh = open(rsid_file, 'r')
         rsids = rsids_fh.readlines()
         rsids = map(lambda rsid: rsid.strip().lower(), rsids)
         rsids_fh.close()
-        user_genome = process_raw_genome_data(sample.data['inputs'])
+        user_genome = process_raw_genome_data(sample_data['inputs'])
         if extended_file:
             extended_fh = open(extended_file, 'r')
             extended_data_lines = extended_fh.readlines()
@@ -63,7 +63,7 @@ def cli():
 @click.option('--project', prompt='Project Name', default='weapp-project',
               help='Name of the project')
 @click.option('--language', prompt='Language to Use', default='python27',
-              type=click.Choice(['python27', 'r']), help='Language of the App')
+              type=click.Choice(['python27', 'python3', 'r']), help='Language of the App')
 @click.option('--sex', prompt='Require Sex', type=click.Choice(['y', 'n']),
               default='y', help='Whether to require sex data')
 @click.option('--age', prompt='Require Age', type=click.Choice(['y', 'n']),
@@ -123,14 +123,19 @@ def init(project, language, sex, age, ancestry, haplogroup, genome, rsid_file, m
     meta_file.close()
 
     if language == 'python27':
-        copy2(lib_path + '/file_templates/requirements.txt', project_path)
-        copy2(lib_path + '/file_templates/wegene_utils.py', project_path)
-        copy2(lib_path + '/file_templates/main.py', project_path)
+        copy2(lib_path + '/file_templates/python27/requirements.txt', project_path)
+        copy2(lib_path + '/file_templates/python27/wegene_utils.py', project_path)
+        copy2(lib_path + '/file_templates/python27/main.py', project_path)
+        copytree(lib_path + '/indexes', project_path + '/indexes')
+    elif language == 'python3':
+        copy2(lib_path + '/file_templates/python3/requirements.txt', project_path)
+        copy2(lib_path + '/file_templates/python3/wegene_utils.py', project_path)
+        copy2(lib_path + '/file_templates/python3/main.py', project_path)
         copytree(lib_path + '/indexes', project_path + '/indexes')
     elif language == 'r':
-        copy2(lib_path + '/file_templates/pacman.R', project_path)
-        copy2(lib_path + '/file_templates/wegene_utils.R', project_path)
-        copy2(lib_path + '/file_templates/main.R', project_path)
+        copy2(lib_path + '/file_templates/r/pacman.R', project_path)
+        copy2(lib_path + '/file_templates/r/wegene_utils.R', project_path)
+        copy2(lib_path + '/file_templates/r/main.R', project_path)
         copytree(lib_path + '/indexes', project_path + '/indexes')
 
     extended_data_file = ''
@@ -193,7 +198,10 @@ def test():
             p1 = subprocess.Popen(['cat', './data/data.json'],
                                   stdout=subprocess.PIPE)
             if language == 'python27':
-                p2 = subprocess.Popen(['python', 'main.py'],
+                p2 = subprocess.Popen(['python2', 'main.py'],
+                                      stdin=p1.stdout, stdout=subprocess.PIPE)
+            if language == 'python3':
+                p2 = subprocess.Popen(['python3', 'main.py'],
                                       stdin=p1.stdout, stdout=subprocess.PIPE)
             elif language == 'r':
                 p2 = subprocess.Popen(['Rscript', 'main.R'],
@@ -201,11 +209,11 @@ def test():
             p1.stdout.close()
 
             click.echo(click.style('WeApp Outputs: ', fg='green'))
-            if p2.stdout is not None:
+            if p2.stdout is not None and p2.stdout != '':
                 if is_markdown:
                     exts = ['markdown.extensions.tables']
-                    result = p2.stdout.read().decode('utf-8')
-                    result = markdown.markdown(result, extensions=exts).encode('utf-8')
+                    result = p2.stdout.read().decode('UTF-8')
+                    result = markdown.markdown(result, extensions=exts)
 
                     template_file = open('./html_template.html', 'r')
                     html_template = template_file.read()
@@ -215,8 +223,8 @@ def test():
                     html_file.write(html_template.replace('{{RESULTS}}', result))
                     html_file.close()
                 else:
-                    result = p2.stdout.read()
-                click.echo(click.style(result + '\n', fg='yellow'))
+                    result = p2.stdout.read().decode('UTF-8')
+                click.echo(click.style('{}\n'.format(result), fg='yellow'))
 
                 if is_markdown:
                     click.echo(click.style('Note: An HTML file named "test_result.html" is generated for you to test styles\n', fg='green'))
@@ -225,13 +233,14 @@ def test():
 
             click.echo(click.style('WeApp Errors: ', fg='green'))
             if p2.stderr is not None:
-                click.echo(click.style(p2.stderr.read() + '\n', fg='red'))
+                click.echo(click.style('{}\n'.format(
+                    p2.stderr.read().decode('UTF-8')), fg='red'))
             else:
                 click.echo(click.style('None\n', fg='yellow'))
         except Exception as e:
             click.echo(click.style('An error has occured during the test: ',
                                    fg='red'))
-            click.echo(click.style(e.stderr, fg='red'))
+            click.echo(click.style(str(e), fg='red'))
 
 
 @cli.command()
@@ -247,11 +256,10 @@ def package():
         archive_name = meta['project'] + '.zip'
         zipf = zipfile.ZipFile(archive_name, 'w', zipfile.ZIP_DEFLATED)
         for dirname, subdirs, files in os.walk('.'):
-            if dirname != './data' and dirname != './indexes' \
-              and dirname != './extended_data':
+            if dirname not in ['./data', './indexes', './extended_data']:
                 zipf.write(dirname)
                 for filename in files:
-                    if filename != archive_name and filename != '.weapp' and filename != 'html_template.html' and filename != 'test_result.html':
+                    if filename not in [archive_name, '.weapp', 'html_template.html', 'test_result.html']:
                         zipf.write(os.path.join(dirname, filename))
             else:
                 click.echo(click.style('Ignoring folder for local testing: '

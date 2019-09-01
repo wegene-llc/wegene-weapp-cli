@@ -1,3 +1,5 @@
+__all__ = ['data']
+
 data = {
   "inputs": {
     "age": 27,

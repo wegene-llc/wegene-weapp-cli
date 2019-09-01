@@ -35,16 +35,16 @@ try:
         user_genome = process_raw_genome_data(inputs)
         rs671 = user_genome['rs671']['genotype']
 
-    if 'sex' in inputs.keys():
+    if 'sex' in inputs:
         sex = inputs['sex']
 
-    if 'age' in inputs.keys():
+    if 'age' in inputs:
         age = inputs['age']
 
-    if 'haplogroup' in inputs.keys():
+    if 'haplogroup' in inputs:
         haplogroup = inputs['haplogroup']
 
-    if 'ancestry' in inputs.keys():
+    if 'ancestry' in inputs:
         sex = inputs['ancestry']
 
     # 如果输入的数据是部分位点数据，你可以直接进行使用，注意 RSID 是大写且要求的位点在没有检测
@@ -53,7 +53,7 @@ try:
     # if 'RS671' in inputs.keys():
     #   rs671 = inputs['RS671']
 
-    if 'RS671' in inputs.keys():
+    if 'RS671' in inputs:
         rs671 = inputs['RS671']
 
     # 现在你可以开始根据输入数据进行实际的计算并输出结论了
@@ -61,7 +61,9 @@ try:
     result = '我是一个结论\n我是结论的第二行'
 
     # 输出给用户的结果只需要通过 print 输出即可，print只可调用一次
-    print result
+    print(result)
 except Exception as e:
     # 错误信息需要被从 stderr 中输出，否则会作为正常结果输出
     sys.stderr.write('这是一段错误信息，可能对用户可见，建议友好输出')
+    sys.stderr.write(str(e))
+    exit(2)

@@ -7,7 +7,7 @@ dependencies = ['click', 'wget', 'markdown']
 
 setup(
     name='wegene-weapp-cli',
-    version='0.2.1',
+    version='0.9.9',
     url='https://github.com/wegene-llc/wegene-weapp-cli',
     license='MIT',
     author='Xiaoli Wu',
@@ -19,7 +19,11 @@ setup(
     zip_safe=False,
     platforms='any',
     install_requires=dependencies,
-    package_data={'': ['file_templates/*', 'indexes/*']},
+    package_data={'': ['file_templates/*',
+                       'file_templates/python27/*', 
+                       'file_templates/python3/*', 
+                       'file_templates/r/*', 
+                       'indexes/*']},
     entry_points={
         'console_scripts': [
             'weapp-cli = weapp_cli.cli:cli',
@@ -42,7 +46,6 @@ setup(
         'Operating System :: Unix',
         'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ]

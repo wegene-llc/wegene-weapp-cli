@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
-
-__all__ = ['process_raw_genome_data']
-
-import os
 import sys
 import gzip
 import base64
-from io import BytesIO
+from StringIO import StringIO
 
 
 def sort_genotype(genotyope):
@@ -21,12 +17,10 @@ Reads the genome string anmd format and parse into a dict of
 
 def parse_genome_string(genome_str, genome_format):
     try:
-        lib_path = os.path.split(os.path.abspath(__file__))[0]
         genome_dict = {}
         # Index files for all posible formats will be provided automatically
         # Do not change the default path below if you wish to use those
-        index_file_path = lib_path + '/indexes/index_' + genome_format + '.idx'
-        with open(index_file_path, 'r') as idx_f:
+        with open('./indexes/index_' + genome_format + '.idx', 'r') as idx_f:
             for line in idx_f:
                 if not line.startswith('NA'):
                     fields = line.strip().split('\t')
@@ -51,8 +45,8 @@ def parse_genome_string(genome_str, genome_format):
 
 def process_raw_genome_data(raw_inputs):
     try:
-        genome = str(gzip.GzipFile(fileobj=BytesIO(
-                    base64.b64decode(raw_inputs['data']))).read())
+        genome = gzip.GzipFile(fileobj=StringIO(
+                    base64.b64decode(raw_inputs['data']))).read()
         genome_format = raw_inputs['format']
         return parse_genome_string(genome, genome_format)
     except Exception as e:
