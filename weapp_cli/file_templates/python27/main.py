@@ -53,7 +53,7 @@ try:
     # if 'RS671' in inputs.keys():
     #   rs671 = inputs['RS671']
 
-    if 'RS671' in inputs:
+    if is_genotype_exist('RS671'):
         rs671 = inputs['RS671']
 
     # 现在你可以开始根据输入数据进行实际的计算并输出结论了
