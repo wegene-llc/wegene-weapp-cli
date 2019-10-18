@@ -9,6 +9,7 @@ import json
 # wegene_utils 库会包含在每个应用的环境当中，无需自行打包上传
 # 这里提供源代码以供应用完整运行
 from wegene_utils import process_raw_genome_data
+from wegene_utils import is_genotype_exist
 
 '''
 当输入是部分位点时, 基因位点数据以 json 形式输入:
