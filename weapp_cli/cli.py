@@ -29,7 +29,7 @@ def generate_test_data(sex, age, ancestry, haplogroup,
     elif rsid_file != '':
         rsids_fh = open(rsid_file, 'r')
         rsids = rsids_fh.readlines()
-        rsids = map(lambda rsid: rsid.strip().lower(), rsids)
+        rsids = list(map(lambda rsid: rsid.strip().lower(), rsids))
         rsids_fh.close()
         user_genome = process_raw_genome_data(sample_data['inputs'])
         if extended_file:
