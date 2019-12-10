@@ -7,7 +7,7 @@ dependencies = ['click', 'wget', 'markdown']
 
 setup(
     name='wegene-weapp-cli',
-    version='1.0.3',
+    version='1.0.4',
     url='https://github.com/wegene-llc/wegene-weapp-cli',
     license='MIT',
     author='Xiaoli Wu',
