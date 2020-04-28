@@ -8,6 +8,7 @@ import wget
 import subprocess
 from shutil import copy2, copytree
 import markdown
+import platform
 
 from weapp_cli.sample import data as sample_data
 from weapp_cli.wegene_utils import process_raw_genome_data
@@ -181,6 +182,13 @@ def download_extra():
 
 @cli.command()
 def test():
+    sys_name = platform.system()
+
+    if not sys_name in ['Windows', 'Linux', 'Darwin']:
+        click.echo(click.style('Aborted. Unsupported operation system!',
+                               fg='red'))
+        exit()
+
     if not os.path.isfile('.weapp'):
         click.echo(click.style('Aborted. Not a weapp project folder!',
                                fg='red'))
@@ -195,8 +203,12 @@ def test():
         is_markdown = meta['markdown']
 
         try:
-            p1 = subprocess.Popen(['cat', './data/data.json'],
-                                  stdout=subprocess.PIPE)
+            if sys_name == 'Windows':
+                p1 = subprocess.Popen(
+                    ['type', './data/data.json'], stdout=subprocess.PIPE, shell=True)
+            else:
+                p1 = subprocess.Popen(
+                    ['cat', './data/data.json'], stdout=subprocess.PIPE)
             if language == 'python27':
                 p2 = subprocess.Popen(['python2', 'main.py'],
                                       stdin=p1.stdout, stdout=subprocess.PIPE)
