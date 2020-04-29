@@ -205,29 +205,38 @@ def test():
         try:
             if sys_name == 'Windows':
                 p1 = subprocess.Popen(
-                    ['type', './data/data.json'], stdout=subprocess.PIPE, shell=True)
+                    ['type', 'data\data.json'], stdout=subprocess.PIPE, shell=True)
+                if language == 'python27' or language == 'python3':
+                    p2 = subprocess.Popen(['python', 'main.py'],
+                                        stdin=p1.stdout, stdout=subprocess.PIPE)
+                elif language == 'r':
+                    p2 = subprocess.Popen(['Rscript', 'main.R'],
+                                        stdin=p1.stdout, stdout=subprocess.PIPE)
+                console_codec = 'gbk'
             else:
                 p1 = subprocess.Popen(
                     ['cat', './data/data.json'], stdout=subprocess.PIPE)
-            if language == 'python27':
-                p2 = subprocess.Popen(['python2', 'main.py'],
-                                      stdin=p1.stdout, stdout=subprocess.PIPE)
-            if language == 'python3':
-                p2 = subprocess.Popen(['python3', 'main.py'],
-                                      stdin=p1.stdout, stdout=subprocess.PIPE)
-            elif language == 'r':
-                p2 = subprocess.Popen(['Rscript', 'main.R'],
-                                      stdin=p1.stdout, stdout=subprocess.PIPE)
+                if language == 'python27':
+                    p2 = subprocess.Popen(['python2', 'main.py'],
+                                        stdin=p1.stdout, stdout=subprocess.PIPE)
+                elif language == 'python3':
+                    p2 = subprocess.Popen(['python3', 'main.py'],
+                                        stdin=p1.stdout, stdout=subprocess.PIPE)
+                elif language == 'r':
+                    p2 = subprocess.Popen(['Rscript', 'main.R'],
+                                        stdin=p1.stdout, stdout=subprocess.PIPE)
+                console_codec = 'UTF-8'
             p1.stdout.close()
 
             click.echo(click.style('WeApp Outputs: ', fg='green'))
             if p2.stdout is not None and p2.stdout != '':
                 if is_markdown:
                     exts = ['markdown.extensions.tables']
-                    result = p2.stdout.read().decode('UTF-8')
+                    result = p2.stdout.read().decode(console_codec)
                     result = markdown.markdown(result, extensions=exts)
 
-                    template_file = open('./html_template.html', 'r')
+                    template_file = open(
+                        './html_template.html', 'r', encoding='utf-8')
                     html_template = template_file.read()
                     template_file.close()
 
@@ -235,7 +244,7 @@ def test():
                     html_file.write(html_template.replace('{{RESULTS}}', result))
                     html_file.close()
                 else:
-                    result = p2.stdout.read().decode('UTF-8')
+                    result = p2.stdout.read().decode(console_codec)
                 click.echo(click.style('{}\n'.format(result), fg='yellow'))
 
                 if is_markdown:
@@ -246,7 +255,7 @@ def test():
             click.echo(click.style('WeApp Errors: ', fg='green'))
             if p2.stderr is not None:
                 click.echo(click.style('{}\n'.format(
-                    p2.stderr.read().decode('UTF-8')), fg='red'))
+                    p2.stderr.read().decode(console_codec)), fg='red'))
             else:
                 click.echo(click.style('None\n', fg='yellow'))
         except Exception as e:
