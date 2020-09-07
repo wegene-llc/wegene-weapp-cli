@@ -47,7 +47,7 @@ try:
         haplogroup = inputs['haplogroup']
 
     if 'ancestry' in inputs:
-        sex = inputs['ancestry']
+        ancestry = inputs['ancestry']
 
     # 如果输入的数据是部分位点数据，你可以直接进行使用，注意 RSID 是大写且要求的位点在没有检测
     # 的情况下 key 可能不存在
