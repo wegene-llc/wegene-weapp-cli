@@ -14,6 +14,95 @@ data = {
         "haplogroup": "C7a2"
       }
     },
+    "haplotype": {
+      "IFNL3" : [
+        "rs12979860 reference (C)",
+        "rs12979860 reference (C)"
+      ],
+      "HLA-B" : [
+        "55:02",
+        "46:01"
+      ],
+      "CFTR" : [
+        "Reference",
+        "Reference"
+      ],
+      "VKORC1" : [
+        "rs9923231 (-1639G>A)",
+        "rs9923231 (-1639G>A)"
+      ],
+      "HLA-DQB1" : [
+        "03:03",
+        "03:03"
+      ],
+      "NUDT15" : [
+        "*1",
+        "*1"
+      ],
+      "HLA-A" : [
+        "24:02",
+        "02:07"
+      ],
+      "UGT1A1" : [
+        "*1",
+        "*1"
+      ],
+      "CYP3A5" : [
+        "*3",
+        "*3"
+      ],
+      "CYP2D6" : [
+        "*10",
+        "*10"
+      ],
+      "CYP2B6" : [
+        "*1",
+        "*1"
+      ],
+      "NAT2" : [
+        "*4",
+        "*7B"
+      ],
+      "TPMT" : [
+        "*1",
+        "*1"
+      ],
+      "DPYD" : [
+        "Reference",
+        "Reference"
+      ],
+      "RYR1" : [
+        "Reference",
+        "Reference"
+      ],
+      "CYP2C19" : [
+        "*2",
+        "*2"
+      ],
+      "CYP4F2" : [
+        "*1",
+        "*1"
+      ],
+      "CYP2C9" : [
+        "*1",
+        "*1"
+      ],
+      "HLA-DRB1" : [
+        "--",
+        "--"
+      ],
+      "G6PD" : [
+        "B (wildtype)"
+      ],
+      "CACNA1S" : [
+        "Reference",
+        "Reference"
+      ],
+      "HLA-C" : [
+        "01:02",
+        "14:02"
+      ]
+    },
     "ancestry": {
       "block": {
         "african": "0.000040",

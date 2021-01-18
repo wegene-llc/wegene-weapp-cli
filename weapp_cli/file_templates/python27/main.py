@@ -46,6 +46,9 @@ try:
     if 'haplogroup' in inputs:
         haplogroup = inputs['haplogroup']
 
+    if 'haplotype' in inputs:
+        haplotype = inputs['haplotype']
+
     if 'ancestry' in inputs:
         ancestry = inputs['ancestry']
 

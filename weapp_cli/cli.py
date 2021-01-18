@@ -14,7 +14,7 @@ from weapp_cli.sample import data as sample_data
 from weapp_cli.wegene_utils import process_raw_genome_data
 
 
-def generate_test_data(sex, age, ancestry, haplogroup,
+def generate_test_data(sex, age, ancestry, haplogroup, haplotype,
                        genome, rsid_file, array_format, extended_file=''):
     data = {'inputs': {'format': array_format}}
     if sex == 'y':
@@ -25,6 +25,8 @@ def generate_test_data(sex, age, ancestry, haplogroup,
         data['inputs']['ancestry'] = sample_data['inputs']['ancestry']
     if haplogroup == 'y':
         data['inputs']['haplogroup'] = sample_data['inputs']['haplogroup']
+    if haplotype == 'y':
+        data['inputs']['haplotype'] = sample_data['inputs']['haplotype']
     if genome == 'y':
         data['inputs']['data'] = sample_data['inputs']['data']
     elif rsid_file != '':
@@ -75,6 +77,9 @@ def cli():
 @click.option('--haplogroup', prompt='Require Haplogroup',
               type=click.Choice(['y', 'n']), default='y',
               help='Whether to require haplogroup data')
+@click.option('--haplotype', prompt='Require Gene Haplotypes',
+              type=click.Choice(['y', 'n']), default='y',
+              help='Whether to require gene haplotypes')
 @click.option('--genome', prompt='Require Whole Genome Data',
               type=click.Choice(['y', 'n']), default='y',
               help='Whether to require whole genome data')
@@ -83,7 +88,7 @@ def cli():
 @click.option('--markdown', prompt='Output In Markdown Format',
               type=click.Choice(['y', 'n']), default='y',
               help='Whether to use markdown for output')
-def init(project, language, sex, age, ancestry, haplogroup, genome, rsid_file, markdown):
+def init(project, language, sex, age, ancestry, haplogroup, haplotype, genome, rsid_file, markdown):
     work_path = os.getcwd()
     lib_path = os.path.split(os.path.abspath(__file__))[0]
     project_path = work_path + '/' + project
@@ -147,7 +152,7 @@ def init(project, language, sex, age, ancestry, haplogroup, genome, rsid_file, m
     click.echo(click.style('Generating test data...', fg='green'))
 
     data_file = open(project_data_path + '/data.json', 'w')
-    data_file.write(generate_test_data(sex, age, ancestry, haplogroup,
+    data_file.write(generate_test_data(sex, age, ancestry, haplogroup, haplotype,
                                        genome, rsid_file, 'wegene_affy_2',
                                        extended_data_file))
     data_file.close()

@@ -46,6 +46,10 @@ tryCatch({
       haplogroup <- inputs$inputs$haplogroup
     }
 
+    if(!(is.null(inputs$inputs$haplotype))){
+      haplotype <- inputs$inputs$haplotype
+    }
+
 
     # Else if you are requiring other data, simply parse input string
     # library(rjson)
